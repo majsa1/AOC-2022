@@ -9,5 +9,9 @@ public class Main {
         Day1 day1 = new Day1(inputFileDayOne);
         System.out.println(day1.getMostCalories());
         System.out.println(day1.getTopThreeCalories());
+
+        String inputFileDayTwo = "src/main/resources/day2.txt";
+        Day2 day2 = new Day2(inputFileDayTwo);
+        System.out.println(day2.getMyScores());
     }
 }

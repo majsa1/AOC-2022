@@ -1,20 +1,25 @@
-package org.example;
+package org.example.days;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import org.example.utils.FileReader;
+import org.example.utils.Utilities;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Day1 {
+public class Day1 implements FileReader {
     private final List<Integer> allCalories;
     private int totalCalories;
 
     public Day1(String fileName) throws IOException {
         allCalories = new ArrayList<>();
-        getArrayFromFile(fileName);
+        Utilities.getDataFromFile(this, fileName);
+    }
+
+    @Override
+    public void read(String data) {
+        addTotalCaloriesToList(data);
     }
 
     public int getMostCalories() {
@@ -29,16 +34,6 @@ public class Day1 {
                 .limit(3)
                 .mapToInt(Integer::intValue)
                 .sum();
-    }
-
-    private void getArrayFromFile(String fileName) throws IOException {
-        File file = new File(fileName);
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
-            String input;
-            while ((input = bufferedReader.readLine()) != null) {
-                addTotalCaloriesToList(input);
-            }
-        }
     }
 
     private void addTotalCaloriesToList(String input) {

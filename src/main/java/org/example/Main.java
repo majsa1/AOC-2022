@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.days.Day1;
+import org.example.days.Day2;
+
 import java.io.IOException;
 
 public class Main {

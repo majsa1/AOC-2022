@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.days.Day1;
 import org.example.days.Day2;
+import org.example.days.Day3;
 
 import java.io.IOException;
 
@@ -16,5 +17,9 @@ public class Main {
         String inputFileDayTwo = "src/main/resources/day2.txt";
         Day2 day2 = new Day2(inputFileDayTwo);
         System.out.println(day2.getMyScores());
+
+        String inputFileDayThree = "src/main/resources/day3.txt";
+        Day3 day3 = new Day3(inputFileDayThree);
+        System.out.println(day3.getTotalScore());
     }
 }

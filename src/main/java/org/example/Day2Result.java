@@ -11,9 +11,9 @@ public class Day2Result {
 
     public int getMyPoints() {
         return switch (myChoice) {
-            case "X" -> 1;
-            case "Y" -> 2;
-            case "Z" -> 3;
+            case "X" -> getOpponentsPoints() - 1 == 0 ? 3 : getOpponentsPoints() - 1;
+            case "Y" -> getOpponentsPoints();
+            case "Z" -> getOpponentsPoints() + 1 == 4 ? 1 : getOpponentsPoints() + 1;
             default -> 0;
         };
     }

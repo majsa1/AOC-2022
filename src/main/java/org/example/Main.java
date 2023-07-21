@@ -3,6 +3,7 @@ package org.example;
 import org.example.day1.Day1;
 import org.example.day2.Day2;
 import org.example.day3.Day3;
+import org.example.day4.Day4;
 
 import java.io.IOException;
 
@@ -21,5 +22,9 @@ public class Main {
         String inputFileDayThree = "src/main/resources/day3.txt";
         Day3 day3 = new Day3(inputFileDayThree);
         System.out.println(day3.getGroupScore());
+
+        String inputFileDayFour = "src/main/resources/day4.txt";
+        Day4 day4 = new Day4(inputFileDayFour);
+        System.out.println(day4.getCount());
     }
 }

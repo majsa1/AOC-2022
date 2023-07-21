@@ -20,6 +20,6 @@ public class Main {
 
         String inputFileDayThree = "src/main/resources/day3.txt";
         Day3 day3 = new Day3(inputFileDayThree);
-        System.out.println(day3.getTotalScore());
+        System.out.println(day3.getGroupScore());
     }
 }

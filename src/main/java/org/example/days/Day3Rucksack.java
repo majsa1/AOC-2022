@@ -2,19 +2,19 @@ package org.example.days;
 
 import java.util.*;
 
-public class Day3Part {
+public class Day3Rucksack {
     private final String firstPart;
     private final String secondPart;
     private Character commonItem;
     private int value;
 
-    public Day3Part(String firstPart, String secondPart) {
+    public Day3Rucksack(String firstPart, String secondPart) {
         this.firstPart = firstPart;
         this.secondPart = secondPart;
         findCommonItem();
     }
 
-    public int getValueByASCII() {
+    public int getCommonItemValueByASCII() {
         if (Character.isLowerCase(commonItem)) {
             value = commonItem - 96;
         }

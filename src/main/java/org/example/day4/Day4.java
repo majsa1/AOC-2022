@@ -16,27 +16,25 @@ public class Day4 implements FileReader {
 
     @Override
     public void read(String data) {
-        Ranges ranges;
-        List<Integer> first = new ArrayList<>();
-        List<Integer> second = new ArrayList<>();
-
         String[] parts = data.split(",");
-        String[] firstPart = parts[0].split("-");
-        for (int i = Integer.parseInt(firstPart[0]); i <= Integer.parseInt(firstPart[1]); i++) {
-            first.add(i);
-        }
-        String[] secondPart = parts[1].split("-");
-        for (int i = Integer.parseInt(secondPart[0]); i <= Integer.parseInt(secondPart[1]); i++) {
-            second.add(i);
-        }
-        ranges = new Ranges(first, second);
+        List<Integer> first = getList(parts[0].split("-"));
+        List<Integer> second = getList(parts[1].split("-"));
 
-        if (ranges.fullyContains()) {
+        Pair pair = new Pair(first, second);
+        if (pair.overlaps()) {
             counter++;
         }
     }
 
     public int getCount() {
         return counter;
+    }
+
+    private List<Integer> getList(String[] parts) {
+        List<Integer> list = new ArrayList<>();
+        for (int i = Integer.parseInt(parts[0]); i <= Integer.parseInt(parts[1]); i++) {
+            list.add(i);
+        }
+        return list;
     }
 }

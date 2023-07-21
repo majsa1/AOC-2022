@@ -1,15 +1,15 @@
-package org.example.days;
+package org.example.day3;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Day3Group {
+public class Group {
     private final List<String> rucksackContents;
-    private Character commonItem;
+    private String commonItem;
     private int value;
 
-    public Day3Group() {
+    public Group() {
         this.rucksackContents = new ArrayList<>();
     }
 
@@ -18,11 +18,15 @@ public class Day3Group {
     }
 
     public int getCommonItemValueByASCII() {
-        if (Character.isLowerCase(commonItem)) {
-            value = commonItem - 96;
+        if (commonItem == null) {
+            return 0;
         }
-        if (Character.isUpperCase(commonItem)) {
-            value = commonItem - 64 + 26;
+        char character = commonItem.charAt(0);
+        if (Character.isLowerCase(character)) {
+            value = character - 96;
+        }
+        if (Character.isUpperCase(character)) {
+            value = character - 64 + 26;
         }
         return value;
     }
@@ -32,17 +36,11 @@ public class Day3Group {
         List<String> second = new ArrayList<>(Arrays.asList(rucksackContents.get(1).split("")));
         List<String> third = new ArrayList<>(Arrays.asList(rucksackContents.get(2).split("")));
 
-        for (String f : first) {
-            for (String s : second) {
-                if (f.equals(s)) {
-                    for (String t : third) {
-                        if (f.equals(t)) {
-                            commonItem = f.charAt(0);
-                            break;
-                        }
-                    }
-                }
-            }
+        boolean firstRetained = first.retainAll(second);
+        boolean secondRetained = first.retainAll(third);
+
+        if (firstRetained && secondRetained && !first.isEmpty()) {
+            commonItem = first.get(0);
         }
     }
 }

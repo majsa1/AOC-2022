@@ -1,10 +1,10 @@
-package org.example.days;
+package org.example.day2;
 
-public class Day2Choice {
+public class Choice {
     private final String myChoice;
     private final String opponentsChoice;
 
-    public Day2Choice(String myChoice, String opponentsChoice) {
+    public Choice(String myChoice, String opponentsChoice) {
         this.myChoice = myChoice;
         this.opponentsChoice = opponentsChoice;
     }

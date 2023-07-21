@@ -1,4 +1,4 @@
-package org.example.days;
+package org.example.day1;
 
 import org.example.utils.FileReader;
 import org.example.utils.Utilities;

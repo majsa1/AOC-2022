@@ -1,4 +1,4 @@
-package org.example.days;
+package org.example.day2;
 
 import org.example.utils.FileReader;
 import org.example.utils.Utilities;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Day2 implements FileReader {
 
-    private final List<Day2Choice> choices;
+    private final List<Choice> choices;
 
     public Day2(String fileName) throws IOException {
         choices = new ArrayList<>();
@@ -18,12 +18,12 @@ public class Day2 implements FileReader {
 
     @Override
     public void read(String data) {
-        choices.add(new Day2Choice(data.substring(2,3), data.substring(0,1)));
+        choices.add(new Choice(data.substring(2,3), data.substring(0,1)));
     }
 
     public int getMyScores() {
         int totalScore = 0;
-        for (Day2Choice choice : choices) {
+        for (Choice choice : choices) {
             totalScore += choice.getMyScore();
         }
         return totalScore;

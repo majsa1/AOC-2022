@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Day5 {
 
-    private Map<Integer, Stack<String>> stacks;
+    private Map<Integer, Deque<String>> stacks;
     private List<List<String>> moves;
 
     public Day5() {
@@ -33,7 +33,7 @@ public class Day5 {
         int amountOfStacks = Integer.parseInt(firstLine.substring(lastIndex));
 
         for (int i = 0; i < amountOfStacks; i++) {
-            Stack<String> stack = new Stack<>();
+            Deque<String> stack = new ArrayDeque<>();
             stacks.put(i + 1, stack);
             for (int j = 1; j < lines.size(); j++) {
                 String[] items = lines.get(j).split("(?=(.{4})+$)");
@@ -569,10 +569,14 @@ public class Day5 {
             int amount = Integer.parseInt(move.get(0));
             int from = Integer.parseInt(move.get(1));
             int to = Integer.parseInt(move.get(2));
+
+            List<String> tempList = new ArrayList<>();
             for (int i = 0; i < amount; i++) {
                 String mover = stacks.get(from).pop();
-                stacks.get(to).push(mover);
+                tempList.add(mover);
             }
+            Collections.reverse(tempList);
+            tempList.forEach(item -> stacks.get(to).offerFirst(item));
         }
     }
 

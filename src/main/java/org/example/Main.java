@@ -4,6 +4,7 @@ import org.example.day1.Day1;
 import org.example.day2.Day2;
 import org.example.day3.Day3;
 import org.example.day4.Day4;
+import org.example.day5.Day5;
 
 import java.io.IOException;
 
@@ -26,5 +27,8 @@ public class Main {
         String inputFileDayFour = "src/main/resources/day4.txt";
         Day4 day4 = new Day4(inputFileDayFour);
         System.out.println(day4.getCount());
+
+        Day5 day5 = new Day5();
+        System.out.println(day5.getMessage());
     }
 }

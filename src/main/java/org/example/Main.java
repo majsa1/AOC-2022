@@ -6,6 +6,7 @@ import org.example.day3.Day3;
 import org.example.day4.Day4;
 import org.example.day5.Day5;
 import org.example.day6.Day6;
+import org.example.day7.Day7;
 
 import java.io.IOException;
 
@@ -34,5 +35,9 @@ public class Main {
 
         Day6 day6 = new Day6();
         System.out.println(day6.getMarker());
+
+        // Day 7:
+        Day7 day7 = new Day7();
+        System.out.println(day7.scanDirectories());
     }
 }

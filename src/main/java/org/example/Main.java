@@ -36,8 +36,9 @@ public class Main {
         Day6 day6 = new Day6();
         System.out.println(day6.getMarker());
 
-        // Day 7:
         Day7 day7 = new Day7();
-        System.out.println(day7.scanDirectories());
+        System.out.println(day7.getResultPartOne());
+        System.out.println(day7.getResultPartTwo());
+
     }
 }

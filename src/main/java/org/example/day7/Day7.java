@@ -1,5 +1,8 @@
 package org.example.day7;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -8,18 +11,37 @@ public class Day7 {
     private TreeNode tree;
     private TreeNode currentNode;
     private int sum;
+    private final int requiredSpace;
+    private final List<Integer> candidateDirectoriesForDeletion;
 
-    public int scanDirectories() {
-        String command = "$";
+    public Day7() {
+        scanDirectories();
+        requiredSpace = getRequiredSpace(tree);
+        candidateDirectoriesForDeletion = new ArrayList<>();
+    }
 
-        for (String line : INPUT.lines().toList()) {
-            if (line.startsWith(command)) {
-                processCommand(line);
-            } else {
-                createContent(line);
-            }
-        }
+    public int getResultPartOne() {
         return getDirectorySizeUnder100000(tree);
+    }
+
+    public int getResultPartTwo() {
+        findCandidateDirectoriesForDeletion(tree);
+        return Collections.min(candidateDirectoriesForDeletion);
+    }
+
+    private void findCandidateDirectoriesForDeletion(TreeNode node) {
+        for (TreeNode nd : node.getNodes()) {
+            int size = nd.getSize(nd);
+            if (!nd.getIsLeaf() && size >= requiredSpace) {
+                candidateDirectoriesForDeletion.add(size);
+            }
+            findCandidateDirectoriesForDeletion(nd);
+        }
+    }
+
+    private int getRequiredSpace(TreeNode node) {
+        int unusedSpace = 70000000 - node.getSize(node);
+        return 30000000 - unusedSpace;
     }
 
     public int getDirectorySizeUnder100000(TreeNode node) {
@@ -31,6 +53,18 @@ public class Day7 {
             getDirectorySizeUnder100000(nd);
         }
         return sum;
+    }
+
+    private void scanDirectories() {
+        String command = "$";
+
+        for (String line : INPUT.lines().toList()) {
+            if (line.startsWith(command)) {
+                processCommand(line);
+            } else {
+                createContent(line);
+            }
+        }
     }
 
     private void processCommand(String command) {

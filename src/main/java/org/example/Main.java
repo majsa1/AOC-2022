@@ -43,6 +43,6 @@ public class Main {
 
         Day8 day8 = new Day8();
         System.out.println(day8.getNumberOfVisibleTrees());
-        System.out.println(day8.getTotalScenicScore());
+        System.out.println(day8.getHighestScenicScore());
     }
 }

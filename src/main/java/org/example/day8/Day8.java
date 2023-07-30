@@ -13,9 +13,17 @@ public class Day8 {
         this.getForest();
     }
 
-    public int getTotalScenicScore() {
-        // Part 2
-        return 1;
+    public int getHighestScenicScore() {
+        int highest = 0;
+        for (int i = 0; i < forest.size(); i++) {
+            for (int j = 0; j < forest.size(); j++) {
+                int score = (int) getScenicScore(i, j);
+                if (isVisible(i, j) && score > highest ) {
+                    highest = score;
+                }
+            }
+        }
+        return highest;
     }
 
     public int getNumberOfVisibleTrees() {
@@ -25,6 +33,35 @@ public class Day8 {
                 if (isVisible(i, j)) {
                     numberOfTrees++;
                 }
+            }
+        }
+        return numberOfTrees;
+    }
+
+    private long getScenicScore(int row, int column) {
+        List<Integer> left = getLeft(row, column);
+        List<Integer> reversedLeft = new ArrayList<>(left);
+        Collections.reverse(reversedLeft);
+        List<Integer> right = getRight(row, column);
+        List<Integer> up = getVertical(true, row, column);
+        List<Integer> reversedUp = new ArrayList<>(up);
+        Collections.reverse(reversedUp);
+        List<Integer> down = getVertical(false, row, column);
+
+        long leftScenic = getNumberOfTrees(reversedLeft, row, column);
+        long rightScenic = getNumberOfTrees(right, row, column);
+        long upScenic = getNumberOfTrees(reversedUp, row, column);
+        long downScenic = getNumberOfTrees(down, row, column);
+
+        return leftScenic * rightScenic * upScenic * downScenic;
+    }
+
+    private int getNumberOfTrees(List<Integer> list, int row, int column) {
+        int numberOfTrees = 0;
+        for (Integer number : list) {
+            numberOfTrees++;
+            if (number >= forest.get(row).get(column)) {
+                break;
             }
         }
         return numberOfTrees;
@@ -50,27 +87,40 @@ public class Day8 {
 
         int value = forest.get(row).get(column);
 
-        List<Integer> left = forest.get(row).subList(0, column);
-        List<Integer> right = forest.get(row).subList(column + 1, forest.get(row).size());
+        List<Integer> left = getLeft(row, column);
+        List<Integer> right = getRight(row, column);
         boolean visibleFromLeft = value > Collections.max(left);
         boolean visibleFromRight = value > Collections.max(right);
 
-        List<Integer> up = new ArrayList<>();
-        List<Integer> down = new ArrayList<>();
-
-        for (int i = 0; i < forest.size(); i++) {
-            if (i < row) {
-                up.add(forest.get(i).get(column));
-            }
-            if (i > row) {
-                down.add(forest.get(i).get(column));
-            }
-        }
+        List<Integer> up = getVertical(true, row, column);
+        List<Integer> down = getVertical(false, row, column);
 
         boolean visibleFromUp = value > Collections.max(up);
         boolean visibleFromDown = value > Collections.max(down);
 
         return visibleFromLeft || visibleFromRight || visibleFromUp || visibleFromDown;
+    }
+
+    private List<Integer> getLeft(int row, int column) {
+        return forest.get(row).subList(0, column);
+    }
+
+    private List<Integer> getRight(int row, int column) {
+        return forest.get(row).subList(column + 1, forest.get(row).size());
+    }
+
+    private List<Integer> getVertical(boolean up, int row, int column) {
+        List<Integer> list = new ArrayList<>();
+
+        for (int i = 0; i < forest.size(); i++) {
+            if (up && i < row) {
+                list.add(forest.get(i).get(column));
+            }
+            if (!up && i > row) {
+                list.add(forest.get(i).get(column));
+            }
+        }
+        return list;
     }
 
     private static final String INPUT =

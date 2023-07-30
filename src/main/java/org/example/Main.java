@@ -7,6 +7,7 @@ import org.example.day4.Day4;
 import org.example.day5.Day5;
 import org.example.day6.Day6;
 import org.example.day7.Day7;
+import org.example.day8.Day8;
 
 import java.io.IOException;
 
@@ -40,5 +41,8 @@ public class Main {
         System.out.println(day7.getResultPartOne());
         System.out.println(day7.getResultPartTwo());
 
+        Day8 day8 = new Day8();
+        System.out.println(day8.getNumberOfVisibleTrees());
+        System.out.println(day8.getTotalScenicScore());
     }
 }

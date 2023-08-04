@@ -8,6 +8,7 @@ import org.example.day5.Day5;
 import org.example.day6.Day6;
 import org.example.day7.Day7;
 import org.example.day8.Day8;
+import org.example.day9.Day9;
 
 import java.io.IOException;
 
@@ -44,5 +45,8 @@ public class Main {
         Day8 day8 = new Day8();
         System.out.println(day8.getNumberOfVisibleTrees());
         System.out.println(day8.getHighestScenicScore());
+
+        Day9 day9 = new Day9();
+        System.out.println(day9.getNumberOfVisitedPositions());
     }
 }

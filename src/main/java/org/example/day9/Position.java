@@ -2,24 +2,23 @@ package org.example.day9;
 
 import java.util.*;
 
+import static org.example.day9.Direction.*;
+import static org.example.day9.Direction.DOWN;
+
 public class Position {
     private int x;
     private int y;
-
-    private static final List<Position> visited = new ArrayList<>();
+    private String name;
+    private static List<Position> visited = new ArrayList<>();
 
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public static void addToVisited(Position position) {
-        visited.add(position);
-    }
-
-    public static int getNumberOfVisited() {
-        Set<Position> visitedSet = new HashSet<>(visited);
-        return visitedSet.size();
+    public Position(String name, int x, int y) {
+        this(x, y);
+        this.name = name;
     }
 
     public int getX() {
@@ -38,6 +37,42 @@ public class Position {
         this.y = y;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public static List<Position> getVisited() {
+        return visited;
+    }
+
+    public static void addToVisited(Position position) {
+        visited.add(position);
+    }
+
+    public static void clearVisited() {
+        visited = new ArrayList<>();
+    }
+
+    public static int getNumberOfVisited() {
+        Set<Position> visitedSet = new HashSet<>(visited);
+        return visitedSet.size();
+    }
+
+    public void move(Direction direction) {
+        if (direction.equals(RIGHT)) {
+            this.x++;
+        }
+        if (direction.equals(LEFT)) {
+            this.x--;
+        }
+        if (direction.equals(UP)) {
+            this.y++;
+        }
+        if (direction.equals(DOWN)) {
+            this.y--;
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,6 +88,6 @@ public class Position {
 
     @Override
     public String toString() {
-        return "Position(" + x + "," + y + ")";
+        return "Position " + name + ": (" + x + "," + y + ")";
     }
 }

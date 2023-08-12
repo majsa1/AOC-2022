@@ -1,108 +1,138 @@
 package org.example.day9;
 
-import java.util.LinkedList;
+import java.util.*;
 
-import static org.example.day9.Directions.RIGHT;
-import static org.example.day9.Directions.LEFT;
-import static org.example.day9.Directions.DOWN;
-import static org.example.day9.Directions.UP;
-
+import static java.lang.Math.absExact;
+import static org.example.day9.Direction.*;
 
 public class Day9 {
+    private LinkedList<Position> rope;
+    private final int amountOfKnots;
 
-    private final LinkedList<Position> positions;
-    private Position tail;
+    public Day9(int amountOfKnots) {
+        this.amountOfKnots = amountOfKnots;
 
-    public Day9() {
-        positions = new LinkedList<>();
-        traverse();
+        initializeRope();
+        moveHead(INPUT);
+    }
+
+    public Day9(String input, int amountOfKnots) {
+        this.amountOfKnots = amountOfKnots;
+
+        initializeRope();
+        moveHead(input);
     }
 
     public int getNumberOfVisitedPositions() {
         return Position.getNumberOfVisited();
     }
 
-    private void traverse() {
-        int x = 0;
-        int y = 0;
+    public List<Position> getVisited() {
+        return new ArrayList<>(Position.getVisited());
+    }
 
-        tail = new Position(0, 0);
+    public void visualize(Collection<Position> list) {
+        int maxX = Objects.requireNonNull(list.stream()
+                .max(Comparator.comparingInt(Position::getX)).orElse(null)).getX();
+        int minX = Objects.requireNonNull(list.stream()
+                .min(Comparator.comparingInt(Position::getX)).orElse(null)).getX();
+        int maxY = Objects.requireNonNull(list.stream()
+                .max(Comparator.comparingInt(Position::getY)).orElse(null)).getY();
+        int minY = Objects.requireNonNull(list.stream()
+                .min(Comparator.comparingInt(Position::getY)).orElse(null)).getY();
 
-        positions.addFirst(tail);
-        Position.addToVisited(tail);
+        for (int y = maxY; y >= minY; y--) {
+            for (int x = minX; x <= maxX; x++) {
+                Position position = new Position(x, y);
+                if (x == 0 && y == 0) {
+                    System.out.printf("s");
+                } else if (list.contains(position)) {
+                    int finalX = x;
+                    int finalY = y;
+                    String name = rope.stream()
+                            .filter(a -> a.getX() == finalX && a.getY() == finalY)
+                            .map(Position::getName)
+                            .findFirst()
+                            .orElse("x");
+                    System.out.printf(name);
+                } else {
+                    System.out.printf(".");
+                }
+            }
+            System.out.println();
+        }
+    }
 
-        for (String line : INPUT.lines().toList()) {
+    private void initializeRope() {
+        Position.clearVisited();
+        this.rope = new LinkedList<>();
+
+        for (int i = 0; i < amountOfKnots; i++) {
+            rope.addFirst(new Position((i == amountOfKnots - 1 ? "H" : String.valueOf(amountOfKnots - 1 - i)), 0, 0));
+        }
+    }
+
+    private void moveHead(String input) {
+        Position position = rope.getFirst();
+        for (String line : input.lines().toList()) {
             String[] lines = line.split(" ");
-            String direction = lines[0].trim();
+            Direction direction = Direction.ofLabel(lines[0].trim());
             int number = Integer.parseInt(lines[1].trim());
 
-            for (int i = 0; i < number; i++) {
-                if (direction.equals(RIGHT.label)) {
-                    x++;
+            if (direction != null) {
+                for (int i = 0; i < number; i++) {
+                    position.move(direction);
+                    for (int j = 1; j < amountOfKnots; j++) {
+                        follow(rope.get(j - 1), rope.get(j));
+                    }
+                    Position.addToVisited(new Position("Visited", rope.getLast().getX(), rope.getLast().getY()));
                 }
-                if (direction.equals(LEFT.label)) {
-                    x--;
-                }
-                if (direction.equals(UP.label)) {
-                    y++;
-                }
-                if (direction.equals(DOWN.label)) {
-                    y--;
-                }
-                positions.push(new Position(x, y));
-                adjustTail(direction);
             }
         }
     }
 
-    private void adjustTail(String direction) {
-        boolean remove = false;
-        Position head = positions.peek();
+    private void follow(Position position, Position next) {
+        boolean distant = absExact(position.getX() - next.getX()) > 1 && absExact(position.getY() - next.getY()) > 1;
+        moveNext(distant, position, next);
+    }
 
-        if (head != null) {
-            int newX = getXPosition(head, tail, direction);
-            int newY = getYPosition(head, tail, direction);
-
-            if (tail.getX() < head.getX() - 1) {
-                newX++;
-                remove = true;
+    private void moveNext(boolean distant, Position position, Position next) {
+        if (position.getX() - next.getX() > 1) {
+            next.move(RIGHT);
+            if (!distant) {
+                setNewY(position, next);
             }
-            if (tail.getX() > head.getX() + 1) {
-                newX--;
-                remove = true;
+        }
+        if (position.getX() - next.getX() < -1) {
+            next.move(LEFT);
+            if (!distant) {
+                setNewY(position, next);
             }
-            if (tail.getY() < head.getY() - 1) {
-                newY++;
-                remove = true;
+        }
+        if (position.getY() - next.getY() > 1) {
+            next.move(UP);
+            if (!distant) {
+                setNewX(position, next);
             }
-            if (tail.getY() > head.getY() + 1) {
-                newY--;
-                remove = true;
+        }
+        if (position.getY() - next.getY() < -1) {
+            next.move(DOWN);
+            if (!distant) {
+                setNewX(position, next);
             }
-            if (remove) {
-                positions.removeLast();
-                tail = positions.getLast();
-                tail.setX(newX);
-                tail.setY(newY);
-            }
-            Position.addToVisited(tail);
         }
     }
 
-    private int getXPosition(Position head, Position tail, String direction) {
-        if ((head.getY() - tail.getY() == 2 || head.getY() - tail.getY() == -2)
-                && (direction.equals(UP.label) || direction.equals(DOWN.label))) {
-            return head.getX();
+    private void setNewX(Position position, Position next) {
+        if (next.getX() != position.getX()) {
+            next.setX(position.getX());
         }
-        return tail.getX();
     }
 
-    private int getYPosition(Position head, Position tail, String direction) {
-        if ((head.getX() - tail.getX() == 2 || head.getX() - tail.getX() == -2)
-            && (direction.equals(LEFT.label) || direction.equals(RIGHT.label))) {
-            return head.getY();
+    private void setNewY(Position position, Position next) {
+        if (next.getY() != position.getY()) {
+            next.setY(position.getY());
         }
-        return tail.getY();
     }
 
     private static final String INPUT =

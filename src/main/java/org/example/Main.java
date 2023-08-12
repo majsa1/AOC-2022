@@ -46,7 +46,8 @@ public class Main {
         System.out.println(day8.getNumberOfVisibleTrees());
         System.out.println(day8.getHighestScenicScore());
 
-        Day9 day9 = new Day9();
+        Day9 day9 = new Day9(10);
+        day9.visualize(day9.getVisited());
         System.out.println(day9.getNumberOfVisitedPositions());
     }
 }

@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.day1.Day1;
+import org.example.day10.Day10;
 import org.example.day2.Day2;
 import org.example.day3.Day3;
 import org.example.day4.Day4;
@@ -11,6 +12,7 @@ import org.example.day8.Day8;
 import org.example.day9.Day9;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Main {
 
@@ -49,5 +51,7 @@ public class Main {
         Day9 day9 = new Day9(10);
         day9.visualize(day9.getVisited());
         System.out.println(day9.getNumberOfVisitedPositions());
+
+        System.out.println(Day10.getAllStrengths(Arrays.asList(20, 60, 100, 140, 180, 220)));
     }
 }

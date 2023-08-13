@@ -165,6 +165,7 @@ public class Day10Test {
     @Test
     public void testAllStrengthsReturnsCorrectSum() {
         List<Integer> signals = Arrays.asList(20, 60, 100, 140, 180, 220);
-        Assert.assertEquals(13140, Day10.getAllStrengths(signals, input));
+        Day10 day10 = new Day10();
+        Assert.assertEquals(13140, day10.getAllStrengths(signals, input));
     }
 }

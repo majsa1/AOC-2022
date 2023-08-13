@@ -4,17 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Day10 {
-    private static final List<Instruction> instructions = new ArrayList<>();
-    private static final List<Cycle> cycles = new ArrayList<>();
-    private static int value = 1;
+    private final List<Instruction> instructions = new ArrayList<>();
+    private final List<Cycle> cycles = new ArrayList<>();
+    private int value = 1;
 
-    private Day10() {}
-
-    public static int getAllStrengths(List<Integer> numbers) {
+    public int getAllStrengths(List<Integer> numbers) {
         return getAllStrengths(numbers, input);
     }
 
-    public static int getAllStrengths(List<Integer> numbers, String input) {
+    public int getAllStrengths(List<Integer> numbers, String input) {
         getCycles(input);
 
         int sum = 0;
@@ -25,7 +23,7 @@ public class Day10 {
         return sum;
     }
 
-    private static void getCycles(String input) {
+    private void getCycles(String input) {
         parseInput(input);
 
         for (Instruction instruction : instructions) {
@@ -38,7 +36,7 @@ public class Day10 {
         }
     }
 
-    private static void parseInput(String input) {
+    private void parseInput(String input) {
         Instruction instruction;
         for (String line : input.lines().toList()) {
             try {

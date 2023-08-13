@@ -54,5 +54,6 @@ public class Main {
 
         Day10 day10 = new Day10();
         System.out.println(day10.getAllStrengths(Arrays.asList(20, 60, 100, 140, 180, 220)));
+        System.out.println(day10.moveSprite());
     }
 }

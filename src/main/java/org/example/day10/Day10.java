@@ -4,12 +4,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Day10 {
-    private final List<Instruction> instructions = new ArrayList<>();
-    private final List<Cycle> cycles = new ArrayList<>();
+    private List<Instruction> instructions;
+    private List<Cycle> cycles;
     private int value = 1;
 
+    public String moveSprite() {
+        return moveSprite(INPUT);
+    }
+
+    public String moveSprite(String input) {
+        getCycles(input);
+
+        int height = 6;
+        int width = 40;
+        int index = 0;
+        int middleOfSprite = 1;
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 0; i < height; i++) {
+            for (int j = i * width; j < i * width + width; j++) {
+                if (index >= middleOfSprite - 1 && index <= middleOfSprite + 1) {
+                    stringBuilder.append(" @ ");
+                } else {
+                    stringBuilder.append(" . ");
+                }
+
+                if (cycles.get(j).getInstruction() != null) {
+                    middleOfSprite += cycles.get(j).getInstruction().getRegister();
+                }
+                index++;
+            }
+            index = 0;
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
     public int getAllStrengths(List<Integer> numbers) {
-        return getAllStrengths(numbers, input);
+        return getAllStrengths(numbers, INPUT);
     }
 
     public int getAllStrengths(List<Integer> numbers, String input) {
@@ -25,11 +58,14 @@ public class Day10 {
 
     private void getCycles(String input) {
         parseInput(input);
+        cycles = new ArrayList<>();
 
         for (Instruction instruction : instructions) {
             for (int i = 0; i < instruction.getCyclesToCompletion(); i++) {
-                cycles.add(new Cycle(cycles.size() + 1, value));
+                Cycle cycle = new Cycle(cycles.size() + 1, value);
+                cycles.add(cycle);
                 if (i == instruction.getCyclesToCompletion() - 1) {
+                    cycle.setInstruction(instruction);
                     value += instruction.getRegister();
                 }
             }
@@ -37,6 +73,8 @@ public class Day10 {
     }
 
     private void parseInput(String input) {
+        instructions = new ArrayList<>();
+
         Instruction instruction;
         for (String line : input.lines().toList()) {
             try {
@@ -49,7 +87,7 @@ public class Day10 {
         }
     }
 
-    private static String input =
+    private static final String INPUT =
             """
                     addx 1
                     addx 4

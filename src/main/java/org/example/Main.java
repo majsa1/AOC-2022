@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.day1.Day1;
 import org.example.day10.Day10;
+import org.example.day11.Day11;
 import org.example.day2.Day2;
 import org.example.day3.Day3;
 import org.example.day4.Day4;
@@ -55,5 +56,8 @@ public class Main {
         Day10 day10 = new Day10();
         System.out.println(day10.getAllStrengths(Arrays.asList(20, 60, 100, 140, 180, 220)));
         System.out.println(day10.moveSprite());
+
+        Day11 day11 = new Day11(20);
+        System.out.println(day11.doMonkeyBusiness());
     }
 }

@@ -57,7 +57,7 @@ public class Main {
         System.out.println(day10.getAllStrengths(Arrays.asList(20, 60, 100, 140, 180, 220)));
         System.out.println(day10.moveSprite());
 
-        Day11 day11 = new Day11(20);
+        Day11 day11 = new Day11(10000);
         System.out.println(day11.doMonkeyBusiness());
     }
 }

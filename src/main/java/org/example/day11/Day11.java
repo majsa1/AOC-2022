@@ -5,27 +5,32 @@ import java.util.*;
 public class Day11 {
 
     private final List<Monkey> monkeys;
+    private final List<Integer> dividers;
     private final int amountOfRounds;
 
     public Day11(int amountOfRounds) {
         this.monkeys = new ArrayList<>();
         this.amountOfRounds = amountOfRounds;
         fillMonkeyList();
+
+        this.dividers = new ArrayList<>(List.of(7, 13, 5, 19, 2, 11, 17, 3));
+        Monkey.setCommonDivider(this.dividers);
     }
 
-    public int doMonkeyBusiness() {
+    public long doMonkeyBusiness() {
         for (int i = 0; i < amountOfRounds; i++) {
             for (int j = 0; j < monkeys.size(); j++) {
                 monkeys.get(j).inspectAndThrow(monkeys);
             }
         }
 
-        Optional<Integer> sum = monkeys.stream()
+        List<Integer> inspections = monkeys.stream()
                 .map(Monkey::getNumberOfInspections)
                 .sorted(Comparator.reverseOrder())
                 .limit(2)
-                .reduce((a, b) -> a * b);
-        return sum.orElse(-1);
+                .toList();
+
+        return Long.valueOf(inspections.get(0)) * Long.valueOf(inspections.get(1));
     }
 
     private void fillMonkeyList() {

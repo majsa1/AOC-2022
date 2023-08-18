@@ -2,18 +2,19 @@ package org.example.day11;
 
 import java.util.List;
 import java.util.Queue;
-import java.util.function.IntUnaryOperator;
+import java.util.function.LongUnaryOperator;
 import java.util.function.Predicate;
 
 public class Monkey {
+    private static int commonDivider;
     private final int id;
     private final Queue<Item> items;
-    private final IntUnaryOperator operator;
-    private final Predicate<Integer> predicate;
+    private final LongUnaryOperator operator;
+    private final Predicate<Long> predicate;
     private final List<Integer> friends;
     private int numberOfInspections;
 
-    public Monkey(int id, Queue<Item> items, IntUnaryOperator operator, Predicate<Integer> predicate, List<Integer> friends) {
+    public Monkey(int id, Queue<Item> items, LongUnaryOperator operator, Predicate<Long> predicate, List<Integer> friends) {
         this.id = id;
         this.items = items;
         this.predicate = predicate;
@@ -21,12 +22,18 @@ public class Monkey {
         this.friends = friends;
     }
 
+    public static void setCommonDivider(List<Integer> dividers) {
+        commonDivider = dividers.stream()
+                .filter(Monkey::isPrimeNumber)
+                .reduce(1, (a, b) -> a * b);
+    }
+
     public void inspectAndThrow(List<Monkey> monkeys) {
         while (!items.isEmpty()) {
-           int worryLevel = inspect(items.poll());
-           worryLevel = getBored(worryLevel);
-           throwToMonkey(worryLevel, monkeys);
-           numberOfInspections++;
+            long worryLevel = inspect(items.poll());
+            worryLevel = getBored(worryLevel);
+            throwToMonkey(worryLevel, monkeys);
+            numberOfInspections++;
         }
     }
 
@@ -42,19 +49,19 @@ public class Monkey {
         return numberOfInspections;
     }
 
-    private int inspect(Item item) {
-        return this.operator.applyAsInt(item.worryLevel());
+    private long inspect(Item item) {
+        return this.operator.applyAsLong(item.worryLevel());
     }
 
-    private int getBored(int worryLevel) {
-        return worryLevel / 3;
+    private long getBored(long worryLevel) { // refactor
+        return (worryLevel % commonDivider);
     }
 
-    private boolean testWorryLevel(int worryLevel) {
+    private boolean testWorryLevel(long worryLevel) {
         return this.predicate.test(worryLevel);
     }
 
-    private void throwToMonkey(int worryLevel, List<Monkey> monkeys) {
+    private void throwToMonkey(long worryLevel, List<Monkey> monkeys) {
         Monkey monkey = findMonkey(friends.get(testWorryLevel(worryLevel) ? 0 : 1), monkeys);
         if (monkey != null) {
             monkey.addToItems(new Item(worryLevel));
@@ -63,5 +70,17 @@ public class Monkey {
 
     private Monkey findMonkey(int monkeyId, List<Monkey> monkeys) {
         return monkeys.stream().filter(a -> a.getId() == monkeyId).findFirst().orElse(null);
+    }
+
+    private static boolean isPrimeNumber(int number) {
+        if (number < 2) {
+            return false;
+        }
+        for (int i = 2; i < number; i++) {
+            if (number % i == 0 ) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -2,19 +2,19 @@ package org.example.day11;
 
 import java.util.List;
 import java.util.Queue;
+import java.util.function.LongPredicate;
 import java.util.function.LongUnaryOperator;
-import java.util.function.Predicate;
 
 public class Monkey {
     private static int commonDivider;
     private final int id;
     private final Queue<Item> items;
     private final LongUnaryOperator operator;
-    private final Predicate<Long> predicate;
+    private final LongPredicate predicate;
     private final List<Integer> friends;
     private int numberOfInspections;
 
-    public Monkey(int id, Queue<Item> items, LongUnaryOperator operator, Predicate<Long> predicate, List<Integer> friends) {
+    public Monkey(int id, Queue<Item> items, LongUnaryOperator operator, LongPredicate predicate, List<Integer> friends) {
         this.id = id;
         this.items = items;
         this.predicate = predicate;
@@ -31,7 +31,7 @@ public class Monkey {
     public void inspectAndThrow(List<Monkey> monkeys) {
         while (!items.isEmpty()) {
             long worryLevel = inspect(items.poll());
-            worryLevel = getBored(worryLevel);
+            worryLevel = manageWorryLevels(worryLevel);
             throwToMonkey(worryLevel, monkeys);
             numberOfInspections++;
         }
@@ -53,7 +53,10 @@ public class Monkey {
         return this.operator.applyAsLong(item.worryLevel());
     }
 
-    private long getBored(long worryLevel) { // refactor
+    private long getBored(long worryLevel) {
+        return (worryLevel / 3);
+    }
+    private long manageWorryLevels(long worryLevel) {
         return (worryLevel % commonDivider);
     }
 
@@ -82,5 +85,17 @@ public class Monkey {
             }
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Monkey{" +
+                "id=" + id +
+                ", items=" + items +
+                ", operator=" + operator +
+                ", predicate=" + predicate +
+                ", friends=" + friends +
+                ", numberOfInspections=" + numberOfInspections +
+                '}';
     }
 }
